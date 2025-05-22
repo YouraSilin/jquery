@@ -61,17 +61,17 @@ config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 ```erb
 class User < ApplicationRecord
 
-\# Devise модули
+# Devise модули
 
 devise :database_authenticatable, :registerable,
 
        :recoverable, :rememberable, :validatable
 
-\# Установим роли
+# Установим роли
 
 enum role: { viewer: 'viewer', admin: 'admin' }
 
-\# Зададим роль по умолчанию
+# Зададим роль по умолчанию
 
 after_initialize do
 
