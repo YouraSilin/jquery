@@ -1,3 +1,4 @@
+```bash
 mkdir devise
 
 git clone https://github.com/YouraSilin/devise.git devise
@@ -7,7 +8,7 @@ cd devise
 docker compose build
 
 docker compose run --no-deps web rails new . --force --database=postgresql --css=bootstrap
-
+```
 replace this files
 
 https://github.com/YouraSilin/devise/blob/main/config/database.yml
@@ -15,7 +16,7 @@ https://github.com/YouraSilin/devise/blob/main/config/database.yml
 https://github.com/YouraSilin/devise/blob/main/Dockerfile
 
 https://github.com/YouraSilin/devise/blob/main/Gemfile
-
+```bash
 docker compose up
 
 docker compose exec web rake db:create db:migrate
@@ -31,14 +32,13 @@ docker compose exec web rails generate migration AddRoleToUsers role:string
 docker compose exec web rails db:migrate
 
 sudo chown -R $USER:$USER .
-
-
+```
 Here is a possible configuration for config/environments/development.rb:
-
+```erb
 config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
+```
 В файл app/views/layouts/application.html.erb добавьте:
-
+```erb
     <ul class="navbar-nav ms-auto">
       <% if user_signed_in? %>
         <li class="nav-item">
@@ -56,9 +56,9 @@ config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
         </li>
       <% end %>
     </ul>
-
+```
 Модифицируйте модель User (app/models/user.rb), чтобы задать роли:
-
+```erb
 class User < ApplicationRecord
 
 \# Devise модули
@@ -80,25 +80,25 @@ after_initialize do
 end
   
 end
-
+```
 Задайте дефолтную роль в консоли (для существующих пользователей).
-
+```bash
 docker compose exec web rails c "User.update_all(role: 'viewer')"
-
+```
 Создайте два контроллера — один для просмотра (режим просмотра) и другой для админки (режим редактирования).
 
 Пример: создадим ресурс Posts.
-
+```bash
 docker compose exec web rails generate scaffold Post title:string content:text
 
 docker compose exec web rails db:migrate
 
 sudo chown -R $USER:$USER .
-
+```
 Ограничиваем доступ в контроллере:
 
 Модифицируйте PostsController:
-
+```erb
 class PostsController < ApplicationController
 
   before_action :authenticate_user!
@@ -116,9 +116,9 @@ class PostsController < ApplicationController
   end
 
 end
-
+```
 Добавьте проверку прав администратора в представления, где доступны действия редактирования и удаления:
-
+```erb
 <% if current_user&.admin? %>
   
   <%= link_to 'Редактировать', edit_post_path(@post) %>
@@ -126,20 +126,18 @@ end
   <%= button_to "Удалить эту запись", @post, method: :delete, data: { turbo_method: 'delete', turbo_confirm: "вы уверены?" } %>
 
 <% end %>
-
+```
 Теперь в контроллер нужно добавить
-
+```erb
 def edit
 
     @post = Post.find(params[:id])
     
 end
-
+```
 В application.html.erb нужно добавить
-
 ``` erb
-
-<style>
+    <style>
       @keyframes fadeInFromNone {
         from {
           opacity: 0;
@@ -181,6 +179,7 @@ end
       </div>
     <% end %>
 
+    <!-- Первый вариант скрипта -->
     <script type="module">
       import $ from "jquery";
 
@@ -195,6 +194,7 @@ end
       });
     </script>
 
+    <!-- Второй вариант скрипта -->
     <script type="module">
       document.addEventListener("turbo:load", () => {
         // Показываем уведомления
@@ -217,17 +217,11 @@ end
         });
       });
     </script>
-    
 ```
-    
 Добавление администратоа
-
+```bash
 docker compose exec web rails c
 
-Найдите пользователя, который должен стать администратором:
-
 user = User.find_by(email: "email@example.com")
-
-Установите ему роль admin:
 
 user.update(role: "admin")
