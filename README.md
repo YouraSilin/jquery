@@ -133,26 +133,22 @@ sudo chown -R $USER:$USER .
 
 class PostsController < ApplicationController
 
-before_action :authenticate_user!
-
-before_action :authorize_admin, only: [:edit, :update, :destroy]
-
-# Только администратор может редактировать и удалять
-
-def edit
-
-@post = Post.find(params[:id])
-
-end
-
-private
-
-def authorize_admin
-
-redirect_to posts_path, alert: 'У вас нет прав для этого действия.' unless current_user&.admin?
-
-end
-
+  before_action :authenticate_user!
+  
+  before_action :authorize_admin, only: [:edit, :update, :destroy]
+  
+  # Только администратор может редактировать и удалять
+  
+  def edit
+    @post = Post.find(params[:id])
+  end
+  
+  private
+  
+  def authorize_admin
+    redirect_to posts_path, alert: 'У вас нет прав для этого действия.' unless current_user&.admin?
+  end
+  
 end
 
 ```
