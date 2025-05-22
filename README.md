@@ -94,6 +94,20 @@ docker compose exec web rails generate scaffold Post title:string content:text
 docker compose exec web rails db:migrate
 
 sudo chown -R $USER:$USER .
+
+docker compose exec web bin/importmap pin jquery
+```
+В importmap.rb должно появиться
+```erb
+pin "jquery", preload: true # @3.7.1
+```
+В application.js нужно добавить
+```erb
+import $ from "jquery";
+
+$(document).ready(function() {
+  console.log("jQuery is ready!");
+});
 ```
 Ограничиваем доступ в контроллере:
 
@@ -130,9 +144,7 @@ end
 Теперь в контроллер нужно добавить
 ```erb
 def edit
-
     @post = Post.find(params[:id])
-    
 end
 ```
 В application.html.erb нужно добавить
