@@ -198,7 +198,9 @@ pin "jquery", to: "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"
 ```erb
 
 import $ from "jquery";
-
+// Устанавливаем jQuery и $ как глобальные переменные
+window.jQuery = jQuery;
+window.$ = jQuery;
 $(document).ready(function() {
   console.log("jQuery is ready!");
 });
