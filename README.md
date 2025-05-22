@@ -170,6 +170,22 @@ end
         color: #721c24;
         border-color: #f5c6cb;
       }
+      .scroll-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        z-index: 1000;
+      }
+      .scroll-button:hover {
+        background-color: #0056b3;
+      }
     </style>
 
     <% flash.each do |type, message| %>
@@ -179,7 +195,7 @@ end
       </div>
     <% end %>
 
-    <!-- Первый вариант скрипта -->
+    <!-- Первый вариант скрипта сообщений -->
     <script type="module">
       import $ from "jquery";
 
@@ -194,7 +210,7 @@ end
       });
     </script>
 
-    <!-- Второй вариант скрипта -->
+    <!-- Второй вариант скрипта сообщений -->
     <script type="module">
       document.addEventListener("turbo:load", () => {
         // Показываем уведомления
@@ -214,6 +230,37 @@ end
               alert.style.display = "none";
             }, 1200);
           }, 2000);
+        });
+      });
+    </script>
+
+    <!-- Кнопка наверх -->
+    <button id="scroll-to-top" class="scroll-button" style="display: none;">Наверх  </button>
+
+    <script type="module">
+      document.addEventListener("turbo:load", () => {
+        const scrollToTopButton = document.getElementById("scroll-to-top");
+
+        if (!scrollToTopButton) return;
+
+        // Функция для показа/скрытия кнопки при прокрутке
+        const handleScroll = () => {
+          if (window.scrollY > 200) { // Показываем кнопку, если прокрутили больше 200px
+            scrollToTopButton.style.display = "block";
+          } else {
+            scrollToTopButton.style.display = "none";
+          }
+        };
+
+        // Скролл-обработчик
+        window.addEventListener("scroll", handleScroll);
+
+        // Обработчик нажатия на кнопку
+        scrollToTopButton.addEventListener("click", () => {
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+          });
         });
       });
     </script>
