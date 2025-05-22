@@ -105,7 +105,7 @@ class PostsController < ApplicationController
   
   before_action :authorize_admin, only: [:edit, :update, :destroy]
 
-  \# Только администратор может редактировать и удалять
+  # Только администратор может редактировать и удалять
   
   private
 
