@@ -37,3 +37,61 @@ Here is a possible configuration for config/environments/development.rb:
 ```erb
 config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 ```
+
+В файл app/views/layouts/application.html.erb добавьте:
+
+```erb
+<ul class="navbar-nav ms-auto">
+  <% if user_signed_in? %>
+    <li class="nav-item">
+      <span class="nav-link">Вы зашли как: <strong><%= current_user.email %></strong></span>
+    </li>
+    <li class="nav-item">
+      <%= button_to "Выйти", destroy_user_session_path, method: :delete, class: "nav-link" %>
+    </li>
+  <% else %>
+    <li class="nav-item">
+      <%= link_to "Войти", new_user_session_path, class: "nav-link" %>
+    </li>
+    <li class="nav-item">
+      <%= link_to "Регистрация", new_user_registration_path, class: "nav-link" %>
+    </li>
+  <% end %>
+</ul>
+<% if flash[:alert] %>
+  <div class="alert alert-danger">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+```
+Модифицируйте модель User (app/models/user.rb), чтобы задать роли:
+
+```erb
+class User < ApplicationRecord
+
+# Devise модули
+
+devise :database_authenticatable, :registerable,
+
+   :recoverable, :rememberable, :validatable
+
+# Установим роли
+
+enum role: { viewer: 'viewer', admin: 'admin' }
+
+# Зададим роль по умолчанию
+
+after_initialize do
+
+self.role ||= :viewer
+
+end
+
+end
+```
+
+Задайте дефолтную роль в консоли (для существующих пользователей).
+
+```bash
+docker compose exec web rails c "User.update_all(role: 'viewer')"
+```
