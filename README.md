@@ -161,7 +161,7 @@ end
 
 ```erb
 
-<ul class="navbar-nav ms-auto">
+    <ul class="navbar-nav ms-auto">
       <% if user_signed_in? %>
         <li class="nav-item">
           <span class="nav-link">Вы зашли как: <strong><%= current_user.email %></strong></span>
@@ -183,5 +183,15 @@ end
         <%= flash[:alert] %>
       </div>
     <% end %>
+
+```
+
+Добавление администратоа
+
+```erb
+
+docker compose exec web rails c
+user = User.find_by(email: "email@example.com")
+user.update(role: "admin")
 
 ```
