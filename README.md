@@ -176,3 +176,31 @@ user = User.find_by(email: "email@example.com")
 user.update(role: "admin")
 
 ```
+
+Импорт Jquery
+
+```bash
+
+docker compose exec web bin/importmap pin jquery
+
+```
+
+В importmaps.rb должно появиться
+
+```erb
+
+pin "jquery", to: "https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js", preload: true
+
+```
+
+В application.js нужно добавить
+
+```erb
+
+import $ from "jquery";
+
+$(document).ready(function() {
+  console.log("jQuery is ready!");
+});
+
+```
