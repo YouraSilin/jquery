@@ -150,10 +150,17 @@ end
       }
       .alert {
         display: none;
-        padding: 10px;
-        margin: 10px;
+        padding: 15px 20px;
+        margin: 15px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999;
+        max-width: 90%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
       .alert.success {
         background-color: #d4edda;
@@ -175,25 +182,16 @@ end
     <% end %>
 
     <script type="module">
-      document.addEventListener("turbo:load", () => {
-        // Показываем уведомления
-        const alerts = document.querySelectorAll(".alert");
-        alerts.forEach((alert) => {
-          alert.style.display = "block";
-          alert.style.opacity = "1";
-          alert.style.animation = "fadeInFromNone 1.2s";
+      import $ from "jquery";
 
-          // Автоматическое скрытие через 2 секунды
-          setTimeout(() => {
-            alert.style.transition = "opacity 1.2s";
-            alert.style.opacity = "0";
+      $(document).ready(function() {
+        // Показываем уведомление
+        $(".alert").css("display", "block").css("opacity", "1").css("animation", "fadeInFromNone 1.2s");
 
-            // Удаляем элемент после того, как он полностью исчезнет
-            setTimeout(() => {
-              alert.style.display = "none";
-            }, 1200);
-          }, 2000);
-        });
+        // Автоматическое скрытие через 2 секунды
+        setTimeout(function() {
+          $(".alert").fadeOut(1200);
+        }, 2000);
       });
     </script>
 
