@@ -11,11 +11,11 @@ docker compose run --no-deps web rails new . --force --database=postgresql --css
 ```
 replace this files
 
-https://github.com/YouraSilin/jquery/blob/main/config/database.yml
+https://github.com/YouraSilin/jquery/blob/master/config/database.yml
 
-https://github.com/YouraSilin/jquery/blob/main/Dockerfile
+https://github.com/YouraSilin/jquery/blob/master/Dockerfile
 
-https://github.com/YouraSilin/jquery/blob/main/Gemfile
+https://github.com/YouraSilin/bindev2/blob/main/Gemfile
 ```bash
 docker compose up
 
