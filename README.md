@@ -1,7 +1,7 @@
 ```bash
 mkdir devise
 
-git clone https://github.com/YouraSilin/devise.git devise
+git clone https://github.com/YouraSilin/jquery.git devise
 
 cd devise
 
